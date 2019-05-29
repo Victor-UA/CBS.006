@@ -7,6 +7,9 @@ namespace CBS._006.Lib2
     public class Class1: CommandBase
     {
         protected override string Id => typeof(Class1).FullName;
-        
+
+        [ExternalLibraryCommand(nameof(Internal))]
+        protected void Internal() { }
+
     }
 }

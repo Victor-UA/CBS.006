@@ -25,10 +25,10 @@ namespace CBS._006.Launcher
         public static void LoadLibraries()
         {
             _libraries = new List<ExternalLibrary>();
-            var LibDir = new DirectoryInfo("Libraries");
-            if (LibDir.Exists)
+            var libDir = new DirectoryInfo("Libraries");
+            if (libDir.Exists)
             {
-                var libs = LibDir.GetFiles("*.dll");
+                var libs = libDir.GetFiles("*.dll");
                 foreach (var fileInfo in libs)
                 {
                     var assembly = Assembly.LoadFile(fileInfo.FullName);
@@ -36,21 +36,18 @@ namespace CBS._006.Launcher
                         t.IsClass
                         && t.IsVisible
                         && t.CustomAttributes.Any(a => a.AttributeType == typeof(ExternalLibraryCommandAttribute)));
-                    if (classes != null)
+                    var library = new ExternalLibrary(assembly.FullName);
+                    _libraries.Add(library);
+                    foreach (var type in classes)
                     {
-                        var library = new ExternalLibrary(assembly.FullName);
-                        _libraries.Add(library);
-                        foreach (var type in classes)
-                        {
-                            var command = Activator.CreateInstance(type) as CommandBase ??
-                                          Activator.CreateInstance(type) as CBS._006.Base.Interfaces.ICommand;
+                        var command = Activator.CreateInstance(type) as CommandBase ??
+                                      Activator.CreateInstance(type) as CBS._006.Base.Interfaces.ICommand;
 
-                            library.Commands.Add(type.Name, command as CommandBase);
-                        }
-                    }                    
+                        library.Commands.Add(type.Name, command as CommandBase);
+                    }
                 }
             }
-        }        
+        }
 
         public static void ProcessCommand(string name)
         {

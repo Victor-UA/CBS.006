@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExternalLibrary.cs" />
-    <Compile Include="ICommandExternalLibraryAttribute.cs" />
+    <Compile Include="ExternalLibraryAttribute.cs" />
     <Compile Include="CommandBase.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
